@@ -24,7 +24,7 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 505;
+    canvas.width = 700;
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
@@ -93,7 +93,7 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        player.update(dt);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -112,14 +112,23 @@ var Engine = (function(global) {
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
                 'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/grass-block.png',    // Row 2 of 2 of grass
+                'images/char-boy.png',      //Character boy
+                'images/char-cat-girl.png', // Character cat girl
+                'images/char-horn-girl.png', // Character horn girl
+                'images/char-pink-girl.png',  // Character pink girl
+                'images/char-princess-girl.png' // Character princess girl
             ],
             numRows = 6,
-            numCols = 5,
+            numCols =6,
             row, col;
         
+        
+        
+        
         // Before drawing, clear existing canvas
-        ctx.clearRect(0,0,canvas.width,canvas.height)
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+       
 
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
@@ -134,8 +143,11 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                
+                ctx.drawImage(Resources.get(rowImages[row]), (col+1) * 101, row * 83);
             }
+            if(row < 5)
+                ctx.drawImage(Resources.get(rowImages[row +6]),10, row * 100);
         }
 
         renderEntities();
@@ -173,7 +185,11 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
     ]);
     Resources.onReady(init);
 
