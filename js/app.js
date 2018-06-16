@@ -43,10 +43,17 @@ var Player = function(spr) {
 // Update the player's position, required method for game
 
 Player.prototype.update = function(dt) {
-   if(((this.x - bug1.x < 10) && (this.y - bug1.y < 20)) || ((this.x - bug2.x < 10) &&(this.y - bug2.y < 20))
-                || ((this.x - bug3.x < 10) && (this.y - bug2.y < 20)))
+           var b1pos,b2pos,b3pos,pposx,pposy;
+            b1pos = Math.ceil(bug1.x / 101);
+            b2pos = Math.ceil(bug2.x /101);
+            b3pos = Math.ceil(bug3.x /101);
+            pposx = Math.ceil(this.x /101);
+            pposy = Math.ceil(this.y /83);
+    
+    
+   if((pposx == b1pos && pposy == 3) ||(pposx == b2pos && pposy == 2 ) || (pposx == b3pos && pposy == 1 ))
        {
-           alert(this.x);
+        
            this.x = 2*101;
            this.y = 5*83;
            Player.prototype.update();
@@ -108,12 +115,20 @@ var bug3 = new Enemy((1+Math.random()),3);
 var allEnemies = [bug1,bug2,bug3];
 var player = new Player('images/char-boy.png');
 
+
 //This starts the enemy on loading the game
 document.addEventListener('load', function(l) {
     bug1.update();
     bug2.update();
     bug3.update();
 });
+//This event listens if the new player sprite is clicked
+
+document.addEventListener('click', function(l) {
+    //alert("X is " + this.x +" and Y is  "+this.y);
+    alert(Resources.toArray().toString());
+});
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
