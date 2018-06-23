@@ -18,6 +18,7 @@ var Engine = (function(global) {
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
      */
+    var popText= "Congratulations!!  You Won the Game Another Game? ";
     var doc = global.document,
         win = global.window,
         canvas = doc.createElement('canvas'),
@@ -38,18 +39,35 @@ var Engine = (function(global) {
          * would be the same for everyone (regardless of how fast their
          * computer is) - hurray time!
          */
-          
+           
         var now = Date.now(),
             
             dt = (now - lastTime) / 1000.0;
-             dt = Math.floor(dt);
+            // dt = Math.ceil(dt);
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
     
+        if(ctx.fillStyle == "#000000") 
+            {
+                update(dt);
 
-        update(dt);
-        render();
+                render();
+                
+            }
+        else
+            {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                /*
+                ctx.fillStyle="#FF0000";
+                ctx.fillRect(0,0,700,100);
+                ctx.fillStyle="#FFFFFF";
+                ctx.font = "20px Arial";
+              ctx.fillText(popText,10,50);
+             */
+                
+                
+            }
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -59,8 +77,14 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-         setTimeout(function(){win.requestAnimationFrame(main);}, dt);
+         //setTimeout(function(){win.requestAnimationFrame(main);}, dt);
    
+      
+        
+               win.requestAnimationFrame(main);
+          
+           
+      
         
     }
 
@@ -71,8 +95,9 @@ var Engine = (function(global) {
     function init() {
         reset();
         lastTime = Date.now();
-        main();
-    }
+         
+                main();
+          }
 
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
@@ -96,11 +121,15 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
+      
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
         player.update(dt);
+        
     }
+    
+        
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
@@ -119,11 +148,7 @@ var Engine = (function(global) {
                 'images/stone-block.png',   // Row 3 of 3 of stone
                 'images/grass-block.png',   // Row 1 of 2 of grass
                 'images/grass-block.png',    // Row 2 of 2 of grass
-                'images/char-boy.png',      //Character boy
-                'images/char-cat-girl.png', // Character cat girl
-                'images/char-horn-girl.png', // Character horn girl
-                'images/char-pink-girl.png',  // Character pink girl
-                'images/char-princess-girl.png' // Character princess girl
+                
             ],
             numRows = 6,
             numCols =6,
@@ -152,8 +177,7 @@ var Engine = (function(global) {
                 
                 ctx.drawImage(Resources.get(rowImages[row]), (col+1) * 101, row * 83);
             }
-            if(row < 5)
-                ctx.drawImage(Resources.get(rowImages[row +6]),10, row * 100);
+            
         }
 
         renderEntities();

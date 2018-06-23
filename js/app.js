@@ -18,12 +18,27 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
    
-   
- 
-  if((this.x) < 601)
-     this.x = this.x + Math.random();
+   var plpos = Math.ceil(player.y /83);
+   if(plpos == 0) 
+       {    
+                   
+            checkEndGame();
+           
+           
+       }
+    
     else
-      this.x =101 + Math.random();
+        {
+           if((this.x) < 601)
+                this.x = this.x + dt * this.x + Math.random();
+            else
+                this.x =90 + dt * this.x + Math.random(); 
+            
+            
+        }
+    
+  
+   
     
 };
 
@@ -50,7 +65,21 @@ Player.prototype.update = function(dt) {
             pposx = Math.ceil(this.x /101);
             pposy = Math.ceil(this.y /83);
     
-    
+    var animfrm;
+   if(pposy == 0) 
+       {    
+         /*  allEnemies.forEach(function(enemy) {
+            animfrm = window.requestAnimationFrame(enemy.update);
+             cancelAnimationFrame(animfrm);
+        });
+        
+           animfrm = window.requestAnimationFrame(player.update);
+           cancelAnimationFrame(animfrm);
+          */
+          
+            checkEndGame();
+           
+       }
    if((pposx == b1pos && pposy == 3) ||(pposx == b2pos && pposy == 2 ) || (pposx == b3pos && pposy == 1 ))
        {
         
@@ -114,19 +143,21 @@ var bug2 = new Enemy((1+Math.random()),2);
 var bug3 = new Enemy((1+Math.random()),3);
 var allEnemies = [bug1,bug2,bug3];
 var player = new Player('images/char-boy.png');
-
+var timer1;
 
 //This starts the enemy on loading the game
 document.addEventListener('load', function(l) {
-    bug1.update();
-    bug2.update();
-    bug3.update();
+   // bug1.update();
+    //bug2.update();
+    //bug3.update();
+    
+    
 });
 //This event listens if the new player sprite is clicked
 
 document.addEventListener('click', function(l) {
     //alert("X is " + this.x +" and Y is  "+this.y);
-    alert(Resources.toArray().toString());
+    
 });
 
 
@@ -142,3 +173,39 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+
+// Modal with a message is displayed once the player reaches the destination
+function checkEndGame() {
+    
+   
+	var popText= "Congratulations!! You Won the Game ... ";
+    popText += "<p> Another Game? " + "<button id='yesbtn' onClick='javascript:newGame();'>Yes</button><button id='nobtn' onClick='javascript:closePopup();'>No</button>";
+    var canv =  window.document.getElementsByTagName("canvas")[0];
+        var  ct = canv.getContext("2d");
+  
+       ct.clearRect(0,0,canv.width,canv.height);
+    ct.fillStyle="#FF0000";
+    ct.fillRect(0,0,canv.width,canv.height);
+    ct.font = "30px Arial";
+  ct.fillText(popText,10,50);
+       
+            
+   
+		document.getElementById("popupmsg").innerHTML = popText;
+		document.getElementById("popup").style.display = "block";
+		document.getElementById("modcont").style.display = "block";
+		
+	}
+
+
+function closePopup() {
+	window.close();
+}
+
+function newGame() {
+   
+    window.location.reload();
+}
+
+    
