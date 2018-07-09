@@ -19,25 +19,11 @@ Enemy.prototype.update = function(dt) {
     // all computers.
    
    var plpos = Math.ceil(player.y /83);
-   if(plpos == 0) 
-       {    
-                   
-            checkEndGame();
-           
-           
-       }
     
-    else
-        {
-           if((this.x) < 601)
+    if((this.x) < 601)
                 this.x = this.x + dt * this.x + Math.random();
             else
                 this.x =90 + dt * this.x + Math.random(); 
-            
-            
-        }
-    
-  
    
     
 };
@@ -68,16 +54,19 @@ Player.prototype.update = function(dt) {
     var animfrm;
    if(pposy == 0) 
        {    
-         /*  allEnemies.forEach(function(enemy) {
-            animfrm = window.requestAnimationFrame(enemy.update);
-             cancelAnimationFrame(animfrm);
-        });
-        
-           animfrm = window.requestAnimationFrame(player.update);
-           cancelAnimationFrame(animfrm);
-          */
-          
-            checkEndGame();
+            var popText= "Congratulations!! You Won the Game ... ";
+           popText += "<p> Another Game? " + "<button id='yesbtn' onClick='javascript:window.location.reload();'>Yes</button><button id='nobtn' onClick='javascript:window.close();'>No</button>";
+           var canv =  window.document.getElementsByTagName("canvas")[0];
+           var  ct = canv.getContext("2d");
+           ct.clearRect(0,0,canv.width,canv.height);
+           ct.fillStyle="#FF0000";
+           ct.fillRect(0,0,canv.width,canv.height);
+           ct.font = "30px Arial";
+            ct.fillText(popText,10,50);
+           document.getElementById("popupmsg").innerHTML = popText;
+           document.getElementById("popup").style.display = "block";
+           document.getElementById("modcont").style.display = "block";
+		
            
        }
    if((pposx == b1pos && pposy == 3) ||(pposx == b2pos && pposy == 2 ) || (pposx == b3pos && pposy == 1 ))
@@ -174,38 +163,3 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-
-// Modal with a message is displayed once the player reaches the destination
-function checkEndGame() {
-    
-   
-	var popText= "Congratulations!! You Won the Game ... ";
-    popText += "<p> Another Game? " + "<button id='yesbtn' onClick='javascript:newGame();'>Yes</button><button id='nobtn' onClick='javascript:closePopup();'>No</button>";
-    var canv =  window.document.getElementsByTagName("canvas")[0];
-        var  ct = canv.getContext("2d");
-  
-       ct.clearRect(0,0,canv.width,canv.height);
-    ct.fillStyle="#FF0000";
-    ct.fillRect(0,0,canv.width,canv.height);
-    ct.font = "30px Arial";
-  ct.fillText(popText,10,50);
-       
-            
-   
-		document.getElementById("popupmsg").innerHTML = popText;
-		document.getElementById("popup").style.display = "block";
-		document.getElementById("modcont").style.display = "block";
-		
-	}
-
-
-function closePopup() {
-	window.close();
-}
-
-function newGame() {
-   
-    window.location.reload();
-}
-
-    
